@@ -4,8 +4,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 
 
-//const server = Server.instance;
-const server = new Server();
+const server = Server.instance;
 
 
 // BodyParser //DEben ir antes de las rutas

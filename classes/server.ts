@@ -1,73 +1,69 @@
-
 import express from 'express';
 import { SERVER_PORT } from '../global/environment';
-import socketIO from 'socket.io';
+import { Server as SocketIOServer } from 'socket.io'; // Cambiado aquí
 import http from 'http';
 
-//import * as socket from '../sockets/socket';
+import * as socket from '../sockets/socket';
 
+export default class Server {
 
-
-export default class Server { // para que sea el paquete que se exporte cuando alguien importe esta clase
-
-    private static _intance: Server;
+    private static _intance: Server; //:instance es del tipo de la clase Server
 
     public app: express.Application;
-    public port: number; //donde lo tendremos corriendo
+    public port: number;
 
-   // public io: socketIO.Server;
-    //private httpServer: http.Server;
+    public io: SocketIOServer;
 
-
-    /* private */ constructor() {
+    private httpServer: http.Server;
+    private constructor() {
 
         this.app = express();
         this.port = SERVER_PORT;
-
-        //this.httpServer = new http.Server( this.app );
-        //this.io = socketIO( this.httpServer );
-
-        //this.escucharSockets();
+        //
+        this.httpServer = new http.Server(this.app); //
+        this.io = new SocketIOServer(this.httpServer, { //
+            cors: {
+                origin: "*", // 
+                methods: ["GET", "POST"]
+            }
+        });
+        this.escucharSockets();
     }
 
-    /*public static get instance() {
-        return this._intance || ( this._intance = new this() );
-    }*/
-
-
-    /*private escucharSockets() {
+    public static get instance() {
+        //
+        return this._intance || (this._intance = new Server());//si ya existe una instancia de la misma // el this es como si fuere Server, si es la primera vez, que cree una instancia
+    }
+    private escucharSockets() { //
 
         console.log('Escuchando conexiones - sockets');
-
-        this.io.on('connection', cliente => {
-
-            // Conectar cliente
-            socket.conectarCliente( cliente, this.io );
-
-            // Configurar usuario
-            socket.configurarUsuario( cliente, this.io );
-
-            // Obtener usuarios activos
-            socket.obtenerUsuarios( cliente, this.io );
-
+        //
+        this.io.on('connection', cliente => { //
+            console.log('Cliente conectado');
             // Mensajes
-            socket.mensaje( cliente, this.io );
+            socket.mensaje(cliente, this.io);
 
             // Desconectar
-            socket.desconectar( cliente, this.io );    
-            
+            socket.desconectar(cliente);
+
+
+            // Escuchar eliminación lógica
+            socket.eliminarRegistro(cliente, this.io);
+
+            // Escuchar notificación desde Flutter
+            socket.notificarMensaje(cliente, this.io);
+
+            //flutter:  socket.emit('notificacion', {'mensaje': 'Nuevo Mensaje'});
 
         });
 
-    }*/
+    }
 
 
-    //start( callback: Function ) {
-    start( callback: ()=>void ) {
-//this.httpServer.listen( this.port, callback );
-this.app.listen( this.port, callback );
-
-
+    start(callback: Function) {
+        console.log("Test1");
+        this.httpServer.listen(this.port, callback); //inicializamos con httpServer
+        console.log("Test2");
     }
 
 }

@@ -46,12 +46,17 @@ export default class Server {
             // Desconectar
             socket.desconectar(cliente);
 
+            // Notificación desde Flutter
+            socket.notificarMensaje(cliente, this.io);
 
-            // Escuchar eliminación lógica
+            // Eiminación lógica
             socket.eliminarRegistro(cliente, this.io);
 
-            // Escuchar notificación desde Flutter
-            socket.notificarMensaje(cliente, this.io);
+            // Restauración lógica
+            socket.restaurarRegistro(cliente, this.io);
+
+            // Pedido Finalizado
+            socket.finalizarPedido(cliente, this.io);
 
             //flutter:  socket.emit('notificacion', {'mensaje': 'Nuevo Mensaje'});
 

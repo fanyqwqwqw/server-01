@@ -60,7 +60,7 @@ export default class Server {
 
 
             // Emitir un evento único desde el back-end
-                         socket.emitirPedidoFinalizado(cliente, this.io);
+            socket.emitirPedidoFinalizado(cliente, this.io);
 
 
             

@@ -26,11 +26,14 @@ export const eliminarRegistro = (cliente: Socket, io: socketIO.Server) => {
 };
 
 //Escuchar restauración lógica
-export const restaurarRegistro = (cliente: any, io: socketIO.Server) => {
-    cliente.on("restaurar-registro", (jsonObj: any) => {
-        console.log("Registro restaurado con ID:", jsonObj);
-        io.emit("restaurarRegistro", jsonObj); // Emitir el evento a todos los clientes conectados
+export const emitirPedidoFinalizado = (cliente: Socket,io: socketIO.Server) => {
+    cliente.on('pedido-finalizado-back', (payload: any) => {
+    console.log('Emitiendo evento "pedido-finalizado-back" a todos los clientes:', payload);
+
+    io.emit('pedido-finalizado-back', payload); // Evento único para evitar conflicto
+    // Emitir a Angular
     });
+
 };
 
 

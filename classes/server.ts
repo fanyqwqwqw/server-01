@@ -59,9 +59,8 @@ export default class Server {
             socket.finalizarPedido(cliente, this.io);
 
 
-            // Emitir un evento único desde el back-end
-            socket.emitirPedidoFinalizado(cliente, this.io);
-
+             // Emitir un evento único desde el back-end
+             socket.emitirPedidoFinalizado(cliente, this.io);
 
             
 

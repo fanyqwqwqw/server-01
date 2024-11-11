@@ -1,6 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+<<<<<<< HEAD
 exports.restaurarRegistro = exports.notificarMensaje = exports.emitirPedidoFinalizado = exports.finalizarPedido = exports.eliminarRegistro = exports.mensaje = exports.desconectar = void 0;
+=======
+exports.notificarMensaje = exports.emitirPedidoFinalizado = exports.finalizarPedido = exports.restaurarRegistro = exports.eliminarRegistro = exports.mensaje = exports.desconectar = void 0;
+>>>>>>> 17629c37a22a2856dacb72c35f8e9218e3252dc6
 const desconectar = (cliente) => {
     cliente.on('disconnect', () => {
         console.log('Cliente desconectado');
@@ -24,6 +28,17 @@ const eliminarRegistro = (cliente, io) => {
     });
 };
 exports.eliminarRegistro = eliminarRegistro;
+<<<<<<< HEAD
+=======
+//Escuchar restauración lógica
+const restaurarRegistro = (cliente, io) => {
+    cliente.on("restaurar-registro", (jsonObj) => {
+        console.log("Registro restaurado con ID:", jsonObj);
+        io.emit("restaurarRegistro", jsonObj); // Emitir el evento a todos los clientes conectados
+    });
+};
+exports.restaurarRegistro = restaurarRegistro;
+>>>>>>> 17629c37a22a2856dacb72c35f8e9218e3252dc6
 //Escuchar Pedido finalizado
 const finalizarPedido = (cliente, io) => {
     cliente.on('pedido-finalizado', (payload) => {
@@ -41,6 +56,11 @@ const emitirPedidoFinalizado = (cliente, io) => {
     });
 };
 exports.emitirPedidoFinalizado = emitirPedidoFinalizado;
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 17629c37a22a2856dacb72c35f8e9218e3252dc6
 const notificarMensaje = (cliente, io) => {
     cliente.on('notificacion', (payload) => {
         console.log('Notificación recibida:', payload);

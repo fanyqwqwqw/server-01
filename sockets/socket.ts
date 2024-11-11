@@ -42,6 +42,18 @@ export const finalizarPedido = (cliente: Socket, io: socketIO.Server) => {
     });
 };
 
+// Emitir un evento único desde el back-end
+export const emitirPedidoFinalizado = (cliente: Socket,io: socketIO.Server) => {
+    cliente.on('pedido-finalizado-back', (payload: any) => {
+    console.log('Emitiendo evento "pedido-finalizado-back" a todos los clientes:', payload);
+
+    io.emit('pedido-finalizado-back', payload); // Evento único para evitar conflicto
+    // Emitir a Angular
+    });
+
+};
+
+
 export const notificarMensaje = (cliente: Socket, io: socketIO.Server) => {
     cliente.on('notificacion', (payload: any) => {
         console.log('Notificación recibida:', payload);

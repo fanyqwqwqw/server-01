@@ -58,10 +58,16 @@ class Server {
             socket.mensaje(cliente, this.io);
             // Desconectar
             socket.desconectar(cliente);
-            // Escuchar eliminación lógica
-            socket.eliminarRegistro(cliente, this.io);
-            // Escuchar notificación desde Flutter
+            // Notificación desde Flutter
             socket.notificarMensaje(cliente, this.io);
+            // Eiminación lógica
+            socket.eliminarRegistro(cliente, this.io);
+            // Restauración lógica
+            socket.restaurarRegistro(cliente, this.io);
+            // Pedido Finalizado
+            socket.finalizarPedido(cliente, this.io);
+            // Emitir un evento único desde el back-end
+            socket.emitirPedidoFinalizado(cliente, this.io);
             //flutter:  socket.emit('notificacion', {'mensaje': 'Nuevo Mensaje'});
         });
     }

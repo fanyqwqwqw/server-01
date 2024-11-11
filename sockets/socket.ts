@@ -25,16 +25,6 @@ export const eliminarRegistro = (cliente: Socket, io: socketIO.Server) => {
     });
 };
 
-//Escuchar restauración lógica
-export const emitirPedidoFinalizado = (cliente: Socket,io: socketIO.Server) => {
-    cliente.on('pedido-finalizado-back', (payload: any) => {
-    console.log('Emitiendo evento "pedido-finalizado-back" a todos los clientes:', payload);
-
-    io.emit('pedido-finalizado-back', payload); // Evento único para evitar conflicto
-    // Emitir a Angular
-    });
-
-};
 
 
 //Escuchar Pedido finalizado
@@ -46,9 +36,14 @@ export const finalizarPedido = (cliente: Socket, io: socketIO.Server) => {
 };
 
 // Emitir un evento único desde el back-end
-export const emitirPedidoFinalizado = (io: socketIO.Server, payload: any) => {
+export const emitirPedidoFinalizado = (cliente: Socket,io: socketIO.Server) => {
+    cliente.on('pedido-finalizado-back', (payload: any) => {
     console.log('Emitiendo evento "pedido-finalizado-back" a todos los clientes:', payload);
+
     io.emit('pedido-finalizado-back', payload); // Evento único para evitar conflicto
+    // Emitir a Angular
+    });
+
 };
 
 
@@ -60,3 +55,11 @@ export const notificarMensaje = (cliente: Socket, io: socketIO.Server) => {
 };
 
 
+
+//Escuchar restauración lógica
+export const restaurarRegistro = (cliente: any, io: socketIO.Server) => {
+    cliente.on("restaurar-registro", (jsonObj: any) => {
+        console.log("Registro restaurado con ID:", jsonObj);
+        io.emit("restaurarRegistro", jsonObj); // Emitir el evento a todos los clientes conectados
+    });
+};

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.notificarMensaje = exports.emitirPedidoFinalizado = exports.finalizarPedido = exports.restaurarRegistro = exports.eliminarRegistro = exports.mensaje = exports.desconectar = void 0;
+exports.restaurarRegistro = exports.notificarMensaje = exports.emitirPedidoFinalizado = exports.finalizarPedido = exports.eliminarRegistro = exports.mensaje = exports.desconectar = void 0;
 const desconectar = (cliente) => {
     cliente.on('disconnect', () => {
         console.log('Cliente desconectado');
@@ -24,14 +24,6 @@ const eliminarRegistro = (cliente, io) => {
     });
 };
 exports.eliminarRegistro = eliminarRegistro;
-//Escuchar restauración lógica
-const restaurarRegistro = (cliente, io) => {
-    cliente.on("restaurar-registro", (jsonObj) => {
-        console.log("Registro restaurado con ID:", jsonObj);
-        io.emit("restaurarRegistro", jsonObj); // Emitir el evento a todos los clientes conectados
-    });
-};
-exports.restaurarRegistro = restaurarRegistro;
 //Escuchar Pedido finalizado
 const finalizarPedido = (cliente, io) => {
     cliente.on('pedido-finalizado', (payload) => {
@@ -49,8 +41,6 @@ const emitirPedidoFinalizado = (cliente, io) => {
     });
 };
 exports.emitirPedidoFinalizado = emitirPedidoFinalizado;
-
-
 const notificarMensaje = (cliente, io) => {
     cliente.on('notificacion', (payload) => {
         console.log('Notificación recibida:', payload);
@@ -58,3 +48,11 @@ const notificarMensaje = (cliente, io) => {
     });
 };
 exports.notificarMensaje = notificarMensaje;
+//Escuchar restauración lógica
+const restaurarRegistro = (cliente, io) => {
+    cliente.on("restaurar-registro", (jsonObj) => {
+        console.log("Registro restaurado con ID:", jsonObj);
+        io.emit("restaurarRegistro", jsonObj); // Emitir el evento a todos los clientes conectados
+    });
+};
+exports.restaurarRegistro = restaurarRegistro;

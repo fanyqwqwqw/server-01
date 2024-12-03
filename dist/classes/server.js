@@ -56,6 +56,7 @@ class Server {
             console.log('Cliente conectado');
             // Mensajes
             socket.mensaje(cliente, this.io);
+            socket.mensajeFlask(cliente, this.io);
             // Desconectar
             socket.desconectar(cliente);
             // Notificación desde Flutter

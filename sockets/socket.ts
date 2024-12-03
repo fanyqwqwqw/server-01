@@ -1,13 +1,33 @@
 import { Socket } from 'socket.io';
 import socketIO from 'socket.io';
+import axios from 'axios';
+import { log } from 'console';
 
-export const desconectar = (cliente: Socket) => { //
-    cliente.on('disconnect', () => {
-        console.log('Cliente desconectado');
+
+export const mensajeFlask = (cliente: Socket, io: socketIO.Server) => {
+    cliente.on('mensaje-para-flask', async (payload: { de: string, cuerpo: string }) => {
+
+      console.log('Mensaje recibido de Angular:', payload);
+      
+      // Enviar a Flask
+      const flaskUrl = 'http://localhost:5001/chatbot'; // Cambiar por la URL de Flask
+      try {
+        const response = await axios.post(flaskUrl, payload);
+        //const flaskResponse = response.data.payload['message'];
+        const flaskResponse = response.data.response;
+      //console.log('response:', flaskResponse);
+      console.log('Mensaje recibido de Flask:', flaskResponse);
+        // Enviar respuesta a Angular
+        io.emit('mensaje-desde-flask', { de: 'Flask', cuerpo: flaskResponse });
+      } catch (error) {
+        console.error('Error al comunicar con Flask:', error);
+      }
     });
-}
+  };
+  
+  
 
-// Escuchar mensajes
+  // Escuchar mensajes
 export const mensaje = (cliente: Socket, io: socketIO.Server) => {//
     cliente.on('mensaje', (payload: { de: string, cuerpo: string }) => { //
         //
@@ -16,6 +36,15 @@ export const mensaje = (cliente: Socket, io: socketIO.Server) => {//
         io.emit('mensaje-nuevo', payload);
     });
 }
+
+
+
+export const desconectar = (cliente: Socket) => { //
+    cliente.on('disconnect', () => {
+        console.log('Cliente desconectado');
+    });
+}
+
 
 // Escuchar eliminación lógica
 export const eliminarRegistro = (cliente: Socket, io: socketIO.Server) => {

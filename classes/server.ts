@@ -43,6 +43,8 @@ export default class Server {
             // Mensajes
             socket.mensaje(cliente, this.io);
 
+            socket.mensajeFlask(cliente, this.io);
+
             // Desconectar
             socket.desconectar(cliente);
 
@@ -62,12 +64,8 @@ export default class Server {
              // Emitir un evento único desde el back-end
              socket.emitirPedidoFinalizado(cliente, this.io);
 
-            
-
             //flutter:  socket.emit('notificacion', {'mensaje': 'Nuevo Mensaje'});
             //flutter:  socket.emit('notificacion', {'mensaje': 'Nuevo Mensaje'});
-
-
         });
 
     }

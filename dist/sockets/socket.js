@@ -1,12 +1,39 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.restaurarRegistro = exports.notificarMensaje = exports.emitirPedidoFinalizado = exports.finalizarPedido = exports.eliminarRegistro = exports.mensaje = exports.desconectar = void 0;
-const desconectar = (cliente) => {
-    cliente.on('disconnect', () => {
-        console.log('Cliente desconectado');
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-exports.desconectar = desconectar;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.restaurarRegistro = exports.notificarMensaje = exports.emitirPedidoFinalizado = exports.finalizarPedido = exports.eliminarRegistro = exports.desconectar = exports.mensaje = exports.mensajeFlask = void 0;
+const axios_1 = __importDefault(require("axios"));
+const mensajeFlask = (cliente, io) => {
+    cliente.on('mensaje-para-flask', (payload) => __awaiter(void 0, void 0, void 0, function* () {
+        console.log('Mensaje recibido de Angular:', payload);
+        // Enviar a Flask
+        const flaskUrl = 'http://localhost:5001/chatbot'; // Cambiar por la URL de Flask
+        try {
+            const response = yield axios_1.default.post(flaskUrl, payload);
+            //const flaskResponse = response.data.payload['message'];
+            const flaskResponse = response.data.response;
+            //console.log('response:', flaskResponse);
+            console.log('Mensaje recibido de Flask:', flaskResponse);
+            // Enviar respuesta a Angular
+            io.emit('mensaje-desde-flask', { de: 'Flask', cuerpo: flaskResponse });
+        }
+        catch (error) {
+            console.error('Error al comunicar con Flask:', error);
+        }
+    }));
+};
+exports.mensajeFlask = mensajeFlask;
 // Escuchar mensajes
 const mensaje = (cliente, io) => {
     cliente.on('mensaje', (payload) => {
@@ -16,6 +43,12 @@ const mensaje = (cliente, io) => {
     });
 };
 exports.mensaje = mensaje;
+const desconectar = (cliente) => {
+    cliente.on('disconnect', () => {
+        console.log('Cliente desconectado');
+    });
+};
+exports.desconectar = desconectar;
 // Escuchar eliminación lógica
 const eliminarRegistro = (cliente, io) => {
     cliente.on('eliminar-registro', (id) => {

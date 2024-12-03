@@ -10,7 +10,12 @@ export const mensajeFlask = (cliente: Socket, io: socketIO.Server) => {
       console.log('Mensaje recibido de Angular:', payload);
       
       // Enviar a Flask
-      const flaskUrl = 'http://localhost:5001/chatbot'; // Cambiar por la URL de Flask
+      //const flaskUrl = 'http://localhost:5001/chatbot'; // Cambiar por la URL de Flask
+      const flaskUrl = 'https://ia-x07k.onrender.com/chatbot'; // Cambiar por la URL de Flask
+
+      
+
+
       try {
         const response = await axios.post(flaskUrl, payload);
         //const flaskResponse = response.data.payload['message'];

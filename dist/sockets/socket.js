@@ -18,7 +18,8 @@ const mensajeFlask = (cliente, io) => {
     cliente.on('mensaje-para-flask', (payload) => __awaiter(void 0, void 0, void 0, function* () {
         console.log('Mensaje recibido de Angular:', payload);
         // Enviar a Flask
-        const flaskUrl = 'http://localhost:5001/chatbot'; // Cambiar por la URL de Flask
+        //const flaskUrl = 'http://localhost:5001/chatbot'; // Cambiar por la URL de Flask
+        const flaskUrl = 'https://ia-x07k.onrender.com/chatbot'; // Cambiar por la URL de Flask
         try {
             const response = yield axios_1.default.post(flaskUrl, payload);
             //const flaskResponse = response.data.payload['message'];

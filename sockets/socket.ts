@@ -69,6 +69,16 @@ export const finalizarPedido = (cliente: Socket, io: socketIO.Server) => {
     });
 };
 
+
+
+//Escuchar Detalles Pedidos Enviados
+export const detallesPedidosEnviados = (cliente: Socket, io: socketIO.Server) => {
+    cliente.on('detalles-pedidos-enviado', (payload: any) => {
+        console.log('Recibiendo:', payload);
+        io.emit('detalles-pedidos-recibidos', payload); // Emitir a Angular
+    });
+};
+
 // Emitir un evento único desde el back-end
 export const emitirPedidoFinalizado = (cliente: Socket,io: socketIO.Server) => {
     cliente.on('pedido-finalizado-back', (payload: any) => {

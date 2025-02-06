@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.restaurarRegistro = exports.notificarMensaje = exports.emitirPedidoFinalizado = exports.finalizarPedido = exports.eliminarRegistro = exports.desconectar = exports.mensaje = exports.mensajeFlask = void 0;
+exports.restaurarRegistro = exports.notificarMensaje = exports.emitirPedidoFinalizado = exports.detallesPedidosEnviados = exports.finalizarPedido = exports.eliminarRegistro = exports.desconectar = exports.mensaje = exports.mensajeFlask = void 0;
 const axios_1 = __importDefault(require("axios"));
 const mensajeFlask = (cliente, io) => {
     cliente.on('mensaje-para-flask', (payload) => __awaiter(void 0, void 0, void 0, function* () {
@@ -66,6 +66,14 @@ const finalizarPedido = (cliente, io) => {
     });
 };
 exports.finalizarPedido = finalizarPedido;
+//Escuchar Detalles Pedidos Enviados
+const detallesPedidosEnviados = (cliente, io) => {
+    cliente.on('detalles-pedidos-enviado', (payload) => {
+        console.log('Recibiendo:', payload);
+        io.emit('detalles-pedidos-recibidos', payload); // Emitir a Angular
+    });
+};
+exports.detallesPedidosEnviados = detallesPedidosEnviados;
 // Emitir un evento único desde el back-end
 const emitirPedidoFinalizado = (cliente, io) => {
     cliente.on('pedido-finalizado-back', (payload) => {

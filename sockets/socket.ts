@@ -83,7 +83,6 @@ export const detallesPedidosEnviados = (cliente: Socket, io: socketIO.Server) =>
 export const emitirPedidoFinalizado = (cliente: Socket,io: socketIO.Server) => {
     cliente.on('pedido-finalizado-back', (payload: any) => {
     console.log('Emitiendo evento "pedido-finalizado-back" a todos los clientes:', payload);
-
     io.emit('pedido-finalizado-back', payload); // Evento único para evitar conflicto
     // Emitir a Angular
     });

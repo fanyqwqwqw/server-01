@@ -71,6 +71,7 @@ class Server {
             socket.finalizarPedido(cliente, this.io);
             // Emitir un evento único desde el back-end
             socket.detallesPedidosEnviados(cliente, this.io);
+            socket.emitirPedidoFinalizado(cliente, this.io);
             //flutter:  socket.emit('notificacion', {'mensaje': 'Nuevo Mensaje'});
             //flutter:  socket.emit('notificacion', {'mensaje': 'Nuevo Mensaje'});
         });
